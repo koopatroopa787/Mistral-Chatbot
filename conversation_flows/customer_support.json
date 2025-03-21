@@ -1,0 +1,84 @@
+{
+  "flow_id": "customer_support",
+  "name": "Customer Support Conversation",
+  "description": "A structured flow for handling customer support inquiries",
+  "initial_stage": "greeting",
+  "stages": {
+    "greeting": {
+      "stage_id": "greeting",
+      "name": "Greeting",
+      "system_prompt": "You are a customer support agent. Begin by greeting the customer warmly and asking how you can help them today. Remember to be polite, professional, and empathetic. This is the first stage of the customer support conversation.",
+      "user_prompt": null,
+      "next_stages": [
+        "problem_identification"
+      ],
+      "completion_criteria": {},
+      "max_turns": 2
+    },
+    "problem_identification": {
+      "stage_id": "problem_identification",
+      "name": "Problem Identification",
+      "system_prompt": "You are now in the problem identification stage. Ask specific questions to understand the customer's issue. Try to gather details about the problem such as when it started, what the customer was doing when it occurred, and any error messages they received. Your goal is to fully understand the problem before moving to solutions.",
+      "user_prompt": null,
+      "next_stages": [
+        "solution_proposal",
+        "escalation"
+      ],
+      "completion_criteria": {
+        "problem_understanding": "The user has provided enough details about their problem",
+        "severity_assessment": "The severity/urgency of the problem is clear"
+      },
+      "max_turns": 4
+    },
+    "solution_proposal": {
+      "stage_id": "solution_proposal",
+      "name": "Solution Proposal",
+      "system_prompt": "You are now in the solution proposal stage. Based on the problem identified, suggest one or more solutions to the customer. Explain the solutions clearly and guide the customer through any steps they need to take. Confirm whether the solution worked for them.",
+      "user_prompt": null,
+      "next_stages": [
+        "resolution_confirmation",
+        "escalation"
+      ],
+      "completion_criteria": {
+        "solution_provided": "At least one solution has been suggested",
+        "customer_understanding": "The customer understands the proposed solution"
+      },
+      "max_turns": 5
+    },
+    "resolution_confirmation": {
+      "stage_id": "resolution_confirmation",
+      "name": "Resolution Confirmation",
+      "system_prompt": "You are now in the resolution confirmation stage. Confirm with the customer that their issue has been resolved. Ask if there's anything else they need help with. If they're satisfied, thank them for contacting support.",
+      "user_prompt": null,
+      "next_stages": [
+        "closing",
+        "problem_identification"
+      ],
+      "completion_criteria": {
+        "problem_resolved": "The customer confirms their problem is resolved",
+        "satisfaction_confirmed": "The customer expresses satisfaction with the solution"
+      },
+      "max_turns": 3
+    },
+    "escalation": {
+      "stage_id": "escalation",
+      "name": "Escalation",
+      "system_prompt": "You are now in the escalation stage. The issue requires specialized assistance. Explain to the customer that you'll need to escalate their issue to a specialist. Collect any additional information needed for the escalation, and provide the customer with an estimate of when they can expect a response.",
+      "user_prompt": null,
+      "next_stages": [
+        "closing"
+      ],
+      "completion_criteria": {},
+      "max_turns": 3
+    },
+    "closing": {
+      "stage_id": "closing",
+      "name": "Closing",
+      "system_prompt": "You are now in the closing stage. Thank the customer for their time and patience. Provide any final instructions or information they might need. Let them know how they can get back in touch if they have further questions or issues in the future.",
+      "user_prompt": null,
+      "next_stages": [],
+      "completion_criteria": {},
+      "max_turns": 2
+    }
+  }
+}

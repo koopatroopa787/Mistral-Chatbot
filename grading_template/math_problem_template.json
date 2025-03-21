@@ -1,0 +1,12 @@
+{
+    "name": "Math_Problem_Template",
+    "criteria": {
+      "accuracy": "Correctness of the final answer",
+      "methodology": "Proper use of mathematical methods and procedures",
+      "calculation": "Accuracy of intermediate calculations",
+      "explanation": "Clear explanation of the solution process",
+      "units": "Proper use of units and notation"
+    },
+    "reference_answer": "",
+    "context": "Solve the mathematical problem showing all your work. Be sure to include all steps and explain your reasoning."
+  }

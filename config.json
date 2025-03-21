@@ -1,0 +1,9 @@
+{
+    "model": "mistral-large-latest",
+    "temperature": 0.7,
+    "max_tokens": 1024,
+    "max_history_length": 10,
+    "index_type": "simple",
+    "embedding_model": "mistral-embed",
+    "system_prompt": "You are a helpful assistant that provides accurate and concise information."
+}

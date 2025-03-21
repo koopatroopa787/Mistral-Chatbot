@@ -1,0 +1,11 @@
+{
+    "name": "General_Medium_Template",
+    "criteria": {
+      "accuracy": "Correctness of the information and concepts",
+      "completeness": "Coverage of all relevant points",
+      "clarity": "Clear explanation and logical structure",
+      "analysis": "Depth of analysis and critical thinking"
+    },
+    "reference_answer": "",
+    "context": "This is a general-purpose template for evaluating responses on various topics at a medium difficulty level."
+  }
