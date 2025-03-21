@@ -13,7 +13,10 @@ config = load_config()
 # Initialize Mistral client
 @st.cache_resource
 def get_mistral_client():
-    api_key = os.environ.get("MISTRAL_API_KEY", st.secrets.get("MISTRAL_API_KEY", "RzVjPRq5NWai8PDEBPWT2o1B1fMjmIE2"))
+    api_key = os.environ.get("MISTRAL_API_KEY", "")
+    if not api_key:
+        st.error("Please set your Mistral API Key in the Home page or as an environment variable.")
+        return None
     return Mistral(api_key=api_key)
 
 # Page configuration
