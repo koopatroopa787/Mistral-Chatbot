@@ -45,11 +45,6 @@ A comprehensive multi-page chatbot application powered by Mistral AI with advanc
   - Document processing options
   - Interface preferences
 
-## 🖼️ Screenshots
-
-<div align="center">
-    <p><i>Screenshots will appear here</i></p>
-</div>
 
 ## 🚀 Quick Start
 
