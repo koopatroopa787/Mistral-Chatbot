@@ -1,0 +1,47 @@
+{
+  "app_name": "Universal AI Chatbot",
+  "version": "2.0.0",
+  "default_provider": "mistral",
+  "providers": {
+    "openai": {
+      "name": "openai",
+      "api_key": "",
+      "default_model": "gpt-4o-mini",
+      "enabled": false
+    },
+    "anthropic": {
+      "name": "anthropic",
+      "api_key": "",
+      "default_model": "claude-3-5-sonnet-20241022",
+      "enabled": false
+    },
+    "mistral": {
+      "name": "mistral",
+      "api_key": "",
+      "default_model": "mistral-large-latest",
+      "enabled": false
+    },
+    "google": {
+      "name": "google",
+      "api_key": "",
+      "default_model": "gemini-1.5-flash",
+      "enabled": false
+    }
+  },
+  "default_temperature": 0.7,
+  "default_max_tokens": 1000,
+  "max_history_length": 10,
+  "theme": "dark",
+  "show_token_usage": true,
+  "enable_streaming": true,
+  "index_type": "simple",
+  "embedding_model": "mistral-embed",
+  "chunk_size": 1000,
+  "chunk_overlap": 200,
+  "enable_mcp": true,
+  "mcp_config_path": "config/mcp_servers.json",
+  "enable_conversation_export": true,
+  "enable_response_grading": true,
+  "enable_conversation_flows": true,
+  "default_system_prompt": "You are a helpful AI assistant that provides accurate and concise information."
+}

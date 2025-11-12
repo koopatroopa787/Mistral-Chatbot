@@ -1,7 +1,22 @@
-streamlit
-openai
-langchain
-nltk
-scikit-learn
-mistral-client>=0.0.1
-numpy>=1.20.0
+# Core dependencies
+streamlit>=1.30.0
+python-dotenv>=1.0.0
+
+# AI Provider SDKs
+openai>=1.10.0
+anthropic>=0.18.0
+mistralai>=0.1.0
+google-generativeai>=0.3.0
+
+# Document processing
+langchain>=0.1.0
+nltk>=3.8.1
+scikit-learn>=1.3.0
+numpy>=1.24.0
+pypdf>=3.17.0
+
+# HTTP requests for MCP
+requests>=2.31.0
+
+# Utilities
+python-dateutil>=2.8.2

@@ -1,0 +1,13 @@
+{
+  "servers": [
+    {
+      "name": "example-mcp-server",
+      "url": "http://localhost:8080",
+      "api_key": null,
+      "description": "Example MCP server for demonstration",
+      "enabled": false,
+      "timeout": 30,
+      "headers": null
+    }
+  ]
+}
