@@ -1,57 +1,94 @@
-# Mistral AI Chatbot
+# Universal AI Chatbot 🤖
 
 <div align="center">
 
-![Mistral AI Chatbot Logo](https://img.shields.io/badge/Mistral%20AI-Chatbot-4B7BEC?style=for-the-badge&logo=mistral&logoColor=white)
+![Universal AI Chatbot](https://img.shields.io/badge/Universal%20AI-Chatbot-blueviolet?style=for-the-badge)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-FF4B4B.svg)](https://streamlit.io/)
-[![Mistral AI](https://img.shields.io/badge/Mistral%20AI-API-5c5470.svg)](https://mistral.ai/)
+
+**One unified interface for all your favorite AI models**
+
+Supporting OpenAI • Anthropic Claude • Google Gemini • Mistral AI • MCP Servers
+
+[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
 </div>
 
-A comprehensive multi-page chatbot application powered by Mistral AI with advanced features including document processing, context-aware responses, response grading, structured conversation flows, and more.
+---
+
+## 🌟 Overview
+
+Universal AI Chatbot is a comprehensive, multi-model AI assistant that provides a single, elegant interface to interact with multiple AI providers. Switch seamlessly between OpenAI's GPT models, Anthropic's Claude, Google's Gemini, and Mistral AI - all from one application.
+
+### Why Universal AI Chatbot?
+
+- **🎯 Multi-Provider Support**: Use any AI model from OpenAI, Anthropic, Google, or Mistral
+- **🔌 MCP Integration**: Connect to Model Context Protocol servers for extended capabilities
+- **📚 Document Intelligence**: Index and search documents with semantic understanding
+- **💬 Advanced Chat Features**: Real streaming, conversation history, export/import
+- **⚙️ Highly Configurable**: Customize every aspect to match your workflow
+- **🎨 Modern UI**: Beautiful, responsive interface built with Streamlit
 
 ## ✨ Features
 
-- 🤖 **Interactive Chat Interface**: Clean, user-friendly web interface using Streamlit
-- 🧠 **Multiple AI Models**: Support for various Mistral AI models with configurable parameters
-- 📚 **Advanced Document Processing**:
-  - Document indexing and semantic search
-  - Automatic document summarization
-  - Keyword extraction for improved context
-  - Hierarchical chunking for better structure preservation
-- 📝 **Response Grading System**:
-  - Evaluate and score responses
-  - Customizable grading criteria
-  - Template-based evaluation
-  - Educational use cases
-- 🔄 **Structured Conversation Flows**:
-  - Multi-stage conversation structures
-  - Stage-specific system prompts
-  - Guided user interactions
-  - Visual flow editor
-- 📊 **Report Generation**:
-  - Conversation summaries
-  - Document analysis reports
-  - Custom report formats
-- 💾 **Conversation Management**:
-  - Save and load conversations
-  - Export and import functionality
-  - Search through conversation history
-- ⚙️ **Customizable Settings**:
-  - Model selection and parameters
-  - Document processing options
-  - Interface preferences
+### 🎯 Multi-Model AI Support
 
+Switch between AI providers and models on the fly:
+
+- **OpenAI**: GPT-4o, GPT-4 Turbo, GPT-3.5, O1-preview, O1-mini
+- **Anthropic**: Claude 3.5 Sonnet, Claude 3 Opus, Haiku
+- **Google**: Gemini 2.0 Flash, Gemini 1.5 Pro, Flash
+- **Mistral AI**: Large, Medium, Small, Codestral
+
+### 🔌 MCP Server Integration
+
+Connect to Model Context Protocol (MCP) servers to extend your AI's capabilities:
+
+- Custom tool integration
+- External data source connections
+- Real-time health monitoring
+- Easy configuration management
+
+### 📚 Document Intelligence
+
+- **Semantic Search**: Find relevant information using natural language
+- **Auto-Indexing**: Automatically process and index documents
+- **Multiple Formats**: Support for PDF, TXT, MD, CSV, JSON, code files
+- **Context-Aware**: AI responses informed by your documents
+
+### 💬 Advanced Conversation Features
+
+- **Real Streaming**: See responses as they're generated
+- **Conversation Management**: Save, load, export, and import conversations
+- **History Tracking**: Maintain conversation context across sessions
+- **Token Usage**: Monitor token consumption in real-time
+
+### ⚙️ Flexible Configuration
+
+- **Per-Provider Settings**: Configure each AI provider independently
+- **Custom System Prompts**: Define specialized AI behavior
+- **Parameter Tuning**: Adjust temperature, max tokens, and more
+- **Persistent Settings**: Your preferences saved across sessions
+
+### 📊 Additional Features
+
+- Response grading and evaluation (from original project)
+- Structured conversation flows
+- Report generation
+- Multi-page interface with intuitive navigation
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.8 or higher
-- Mistral AI API key ([Get one here](https://mistral.ai/))
+- API keys for your preferred AI provider(s):
+  - [OpenAI API Key](https://platform.openai.com/api-keys)
+  - [Anthropic API Key](https://console.anthropic.com/)
+  - [Google AI API Key](https://makersuite.google.com/app/apikey)
+  - [Mistral AI API Key](https://console.mistral.ai/)
 
 ### Installation
 
@@ -66,179 +103,319 @@ A comprehensive multi-page chatbot application powered by Mistral AI with advanc
    pip install -r requirements.txt
    ```
 
-3. **Set your Mistral API key**:
+3. **Set up environment variables**:
    ```bash
-   # On Windows
-   set MISTRAL_API_KEY=your_api_key_here
-
-   # On Linux/Mac
-   export MISTRAL_API_KEY=your_api_key_here
+   cp .env.example .env
+   # Edit .env and add your API keys
    ```
 
-### Usage
+4. **Run the application**:
+   ```bash
+   streamlit run Home.py
+   ```
 
-Start the application:
-```bash
-streamlit run Home.py
+5. **Configure providers**:
+   - Open http://localhost:8501 in your browser
+   - Configure your AI providers in the sidebar
+   - Start chatting!
+
+## 📖 Documentation
+
+### Project Structure
+
 ```
-
-The application will open in your default web browser at http://localhost:8501
-
-## 🧩 Project Structure
-
-```
-Mistral-Chatbot/
+Universal-AI-Chatbot/
 │
 ├── Home.py                      # Main landing page
+├── app.py                       # Legacy entry point
 │
-├── pages/                       # Streamlit pages
-│   ├── 1_Chat.py                # Chat interface
-│   ├── 2_Document_Index.py      # Document management
-│   ├── 3_Settings.py            # App configuration
-│   ├── 4_Conversations.py       # Saved conversations
-│   ├── 5_Reports.py             # Report generation
-│   ├── 6_Response_Grading.py    # Response evaluation
-│   └── 7_Conversation_Flows.py  # Conversation structures
+├── src/                         # Source code
+│   ├── providers/               # AI provider implementations
+│   │   ├── base.py             # Base provider interface
+│   │   ├── openai_provider.py # OpenAI integration
+│   │   ├── anthropic_provider.py # Anthropic integration
+│   │   ├── google_provider.py  # Google Gemini integration
+│   │   ├── mistral_provider.py # Mistral AI integration
+│   │   └── factory.py          # Provider factory
+│   │
+│   ├── mcp/                    # MCP server integration
+│   │   ├── client.py           # MCP client
+│   │   └── manager.py          # MCP manager
+│   │
+│   ├── config/                 # Configuration management
+│   │   └── settings.py         # Settings class
+│   │
+│   └── utils/                  # Utility functions
+│       ├── conversation.py     # Conversation management
+│       └── logging_config.py   # Logging setup
 │
-├── helper_functions.py          # Utility functions
-├── index_functions.py           # Document indexing functionality
-├── document_processor.py        # Advanced document processing
-├── response_grader.py           # Response grading functionality
-├── conversation_flow.py         # Conversation flow management
+├── pages/                      # Streamlit pages
+│   ├── 1_chat.py              # Main chat interface
+│   ├── 2_conversation_flow.py # Conversation flows
+│   ├── 3_conversations.py     # Saved conversations
+│   ├── 4_document_index.py    # Document management
+│   ├── 5_reports.py           # Report generation
+│   ├── 6_response_grading.py  # Response evaluation
+│   └── 7_settings.py          # App settings
 │
-├── .streamlit/                  # Streamlit configuration
-│   └── config.toml              # UI configuration
+├── config/                     # Configuration files
+│   ├── settings.json          # App settings
+│   ├── settings.example.json  # Example settings
+│   ├── mcp_servers.json       # MCP server configs
+│   └── mcp_servers.example.json # Example MCP config
 │
-├── conversation_flows/          # Saved conversation flows
-│   └── README.md                # Documentation
+├── conversations/              # Saved conversations
+├── conversation_flows/         # Conversation flow templates
+├── grading_template/          # Response grading templates
+├── logs/                      # Application logs
 │
-├── grading_templates/           # Response grading templates
-│   └── README.md                # Documentation
-│
-├── requirements.txt             # Python dependencies
-├── LICENSE                      # MIT License
-├── .gitignore                   # Git ignore file
-└── README.md                    # This file
+├── requirements.txt           # Python dependencies
+├── .env.example              # Environment variables template
+├── .gitignore               # Git ignore rules
+└── README.md                # This file
 ```
 
-## 📋 Feature Details
+### Configuration
 
-### Document Processing
+#### Provider Setup
 
-The document processing system extracts text from various file types, generates summaries, identifies keywords, and breaks content into hierarchical chunks for more natural retrieval.
+Configure AI providers via the web interface or by editing `config/settings.json`:
 
-**Supported File Types**:
-- Text files (.txt, .md)
-- CSV files (.csv)
-- JSON files (.json)
-- PDF files (.pdf)
-- Code files (.py, .js, .html, .css)
+```json
+{
+  "providers": {
+    "openai": {
+      "name": "openai",
+      "api_key": "your-key-here",
+      "default_model": "gpt-4o-mini",
+      "enabled": true
+    }
+  }
+}
+```
 
-### Response Grading
+#### MCP Server Setup
 
-The response grading feature evaluates user responses based on customizable criteria, providing:
-- Numerical scores (1-10)
-- Qualitative feedback
-- Identified strengths and weaknesses
-- Suggested improvements
+Configure MCP servers in `config/mcp_servers.json`:
 
-**Use Cases**:
-- Educational assessment
-- Interview preparation
-- Content quality evaluation
-- Self-improvement
+```json
+{
+  "servers": [
+    {
+      "name": "my-mcp-server",
+      "url": "http://localhost:8080",
+      "api_key": null,
+      "enabled": true
+    }
+  ]
+}
+```
 
-### Conversation Flows
+### Usage Examples
 
-Conversation flows allow for structured interactions with defined stages, each with specific system prompts and transition rules:
+#### Basic Chat
 
-1. **Customer Support Flow**: Guide users through problem identification, troubleshooting, and resolution
-2. **Interview Flow**: Structure job interviews with appropriate questions for each phase
-3. **Custom Flows**: Create your own flows for specific use cases
+1. Navigate to the **Chat** page
+2. Select your preferred provider and model
+3. Type your message and press Enter
+4. Watch the AI respond in real-time (if streaming is enabled)
 
-## 🌐 Deployment Options
+#### Document Context
 
-### Local Installation
+1. Go to **Document Index** page
+2. Upload documents or index a folder
+3. Return to **Chat** page
+4. Enable "Use indexed documents" in sidebar
+5. Ask questions about your documents
 
-Follow the installation steps above to run the application locally.
+#### Conversation Management
 
-### Streamlit Community Cloud
+1. Have a conversation in the Chat page
+2. Click **Save** in the sidebar to save the conversation
+3. Go to **Conversations** page to view/load saved chats
+4. Export conversations for backup or sharing
 
-You can easily deploy this application to Streamlit Community Cloud:
+#### Switching Models
 
-1. Fork this repository to your GitHub account
-2. Sign up at [share.streamlit.io](https://share.streamlit.io/)
-3. Create a new app pointing to your forked repository
-4. Add your Mistral API key to the app's secrets
-   - Go to Advanced settings > Secrets
-   - Add `MISTRAL_API_KEY = "your_api_key_here"`
-5. Deploy the app
+You can switch between providers and models at any time:
 
-### Docker Deployment
+```
+User: What is quantum computing?
+[Using GPT-4o]
+Assistant: Quantum computing is...
 
-A Dockerfile is provided for containerized deployment:
+[Switch to Claude 3.5 Sonnet]
+User: Can you explain that differently?
+[Using Claude 3.5 Sonnet]
+Assistant: Let me rephrase that...
+```
+
+### Advanced Features
+
+#### MCP Server Integration
+
+Connect to MCP servers to extend capabilities:
+
+1. Configure server in `config/mcp_servers.json`
+2. Enable MCP in settings
+3. View server status in Chat page
+4. Use MCP tools in conversations
+
+#### Custom System Prompts
+
+Define specialized AI behavior:
+
+```
+You are an expert Python programmer. When answering questions:
+- Provide working code examples
+- Explain your reasoning
+- Follow PEP 8 style guidelines
+```
+
+#### Response Grading
+
+Evaluate responses for educational purposes:
+
+1. Go to **Response Grading** page
+2. Configure grading criteria
+3. Use `/grade` command in chat
+4. Receive detailed feedback
+
+## 🔧 Development
+
+### Adding a New Provider
+
+1. Create a new provider class in `src/providers/`:
+
+```python
+from .base import BaseProvider, Message, ChatResponse
+
+class CustomProvider(BaseProvider):
+    def get_available_models(self):
+        return ["model-1", "model-2"]
+
+    def chat(self, messages, model, **kwargs):
+        # Implementation
+        pass
+
+    def stream_chat(self, messages, model, **kwargs):
+        # Implementation
+        pass
+```
+
+2. Register in `src/providers/factory.py`:
+
+```python
+from .custom_provider import CustomProvider
+
+class ProviderFactory:
+    _providers = {
+        # ...
+        "custom": CustomProvider,
+    }
+```
+
+### Running Tests
 
 ```bash
-# Build the Docker image
-docker build -t mistral-chatbot .
+# Install test dependencies
+pip install pytest pytest-cov
 
-# Run the container
-docker run -p 8501:8501 -e MISTRAL_API_KEY=your_api_key_here mistral-chatbot
+# Run tests
+pytest tests/
+
+# Run with coverage
+pytest --cov=src tests/
 ```
 
-Access the application at http://localhost:8501
+### Code Style
 
-## 💻 Advanced Usage
+This project follows PEP 8 style guidelines. Format code with:
 
-### Chat Commands
-
-- **Regular chat**: Simply type your message and press Enter
-- **Search command**: `search: your query` - Search indexed documents
-- **Grade command**: `/grade your response` - Grade a response
-- **Flow commands**:
-  - `/flow flow_id` - Start a conversation flow
-  - `/flow-status` - Show current flow status
-  - `/flow-end` - End the current flow
-
-### API Integration
-
-You can integrate this chatbot with your own applications using the Mistral AI API. The code provides examples of:
-- Chat completion requests
-- Embedding generation
-- Structured prompting
-
-### Custom Templates
-
-The application supports several types of templates:
-- **Grading templates**: Define criteria for response evaluation
-- **Flow templates**: Define structured conversation patterns
-- **Report templates**: Define formats for generated reports
+```bash
+pip install black isort
+black .
+isort .
+```
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request or open an issue.
+We welcome contributions! Here's how you can help:
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add some amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Make your changes**
+4. **Run tests**: `pytest tests/`
+5. **Commit your changes**: `git commit -m 'Add amazing feature'`
+6. **Push to the branch**: `git push origin feature/amazing-feature`
+7. **Open a Pull Request**
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+Please read [contribute.md](contribute.md) for details on our code of conduct and development process.
 
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgements
 
-- [Mistral AI](https://mistral.ai/) for their powerful language models
-- [Streamlit](https://streamlit.io/) for the interactive web framework
-- All open-source contributors and libraries used in this project
+- [OpenAI](https://openai.com/) - GPT models
+- [Anthropic](https://www.anthropic.com/) - Claude models
+- [Google AI](https://ai.google/) - Gemini models
+- [Mistral AI](https://mistral.ai/) - Mistral models
+- [Streamlit](https://streamlit.io/) - Web framework
+- All open-source contributors and libraries
 
-## 📧 Contact
+## 📧 Support
 
-For questions, feedback, or support, please [open an issue](https://github.com/koopatroopa787/Mistral-Chatbot/issues) on GitHub.
+- **Issues**: [GitHub Issues](https://github.com/koopatroopa787/Mistral-Chatbot/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/koopatroopa787/Mistral-Chatbot/discussions)
+- **Email**: Open an issue for support questions
+
+## 🗺️ Roadmap
+
+### Upcoming Features
+
+- [ ] More AI providers (Cohere, AI21, etc.)
+- [ ] Voice input/output support
+- [ ] Image generation integration
+- [ ] Plugin system for custom extensions
+- [ ] Multi-user support
+- [ ] Cloud deployment templates
+- [ ] Mobile-responsive design improvements
+- [ ] Conversation analytics dashboard
+
+## 📊 Version History
+
+### Version 2.0.0 (Current)
+
+Major rewrite with multi-provider support:
+
+- ✨ Support for OpenAI, Anthropic, Google, and Mistral
+- 🔌 MCP server integration
+- 💾 Enhanced conversation management
+- 🎨 Modern, redesigned UI
+- 🔧 Improved configuration system
+- 📊 Real streaming support
+- 🏗️ Modular architecture
+
+### Version 1.0.0
+
+Initial release:
+
+- Basic Mistral AI chatbot
+- Document indexing
+- Response grading
+- Conversation flows
 
 ---
 
 <div align="center">
-Made with ❤️ by <a href="https://github.com/koopatroopa787">koopatroopa787</a>
+
+**Made with ❤️ by [koopatroopa787](https://github.com/koopatroopa787)**
+
+⭐ Star this repo if you find it useful!
+
+[Report Bug](https://github.com/koopatroopa787/Mistral-Chatbot/issues) •
+[Request Feature](https://github.com/koopatroopa787/Mistral-Chatbot/issues)
+
 </div>

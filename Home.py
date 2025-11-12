@@ -1,10 +1,17 @@
 import streamlit as st
-from PIL import Image
 import os
+from pathlib import Path
+import sys
+
+# Add src to path
+sys.path.insert(0, str(Path(__file__).parent / "src"))
+
+from config import load_settings, save_settings
+from providers import ProviderFactory
 
 # Page configuration
 st.set_page_config(
-    page_title="Mistral AI Assistant",
+    page_title="Universal AI Chatbot",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -25,24 +32,32 @@ st.markdown("""
     .main-header {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #4B7BEC;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         margin-bottom: 1rem;
     }
     .sub-header {
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: #333;
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: #555;
         margin-bottom: 2rem;
     }
     .feature-card {
         padding: 1.5rem;
-        border-radius: 0.5rem;
-        background-color: #F5F7FA;
+        border-radius: 0.75rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         margin-bottom: 1rem;
-        border-left: 4px solid #4B7BEC;
+        border-left: 4px solid #667eea;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+    }
+    .feature-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
     .feature-icon {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         margin-right: 0.5rem;
     }
     .feature-title {
@@ -51,96 +66,145 @@ st.markdown("""
         color: #333;
     }
     .feature-description {
-        font-size: 1rem;
-        color: #555;
+        font-size: 0.95rem;
+        color: #666;
         margin-top: 0.5rem;
+        line-height: 1.5;
     }
-    .cta-button {
-        background-color: #4B7BEC;
+    .provider-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        background-color: #667eea;
         color: white;
-        border-radius: 0.5rem;
-        padding: 0.75rem 1.5rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        text-align: center;
-        margin: 2rem 0;
-        cursor: pointer;
-    }
-    .cta-button:hover {
-        background-color: #3867D6;
+        font-size: 0.85rem;
+        margin: 0.25rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Check and set API key if it exists
-if "api_key_set" not in st.session_state:
-    st.session_state.api_key_set = False
+# Initialize settings
+if "settings" not in st.session_state:
+    st.session_state.settings = load_settings()
 
-if "MISTRAL_API_KEY" in os.environ:
-    st.session_state.api_key_set = True
+settings = st.session_state.settings
 
 # Sidebar
 with st.sidebar:
-    st.title("Mistral AI Assistant")
-    
-    # API Key input
-    if not st.session_state.api_key_set:
-        st.subheader("Setup")
-        api_key = st.text_input("Enter your Mistral AI API Key:", type="password")
-        if st.button("Save API Key"):
-            if api_key and api_key.strip():
-                # In a real app, you would want to store this more securely
-                os.environ["MISTRAL_API_KEY"] = api_key
-                st.session_state.api_key_set = True
-                st.success("API Key saved!")
-                st.experimental_rerun()
-            else:
-                st.error("Please enter a valid API Key")
-    else:
-        st.success("API Key is set! ✅")
-        if st.button("Clear API Key"):
-            if "MISTRAL_API_KEY" in os.environ:
-                del os.environ["MISTRAL_API_KEY"]
-            st.session_state.api_key_set = False
-            st.experimental_rerun()
-    
+    st.title("🤖 Universal AI Chatbot")
+    st.markdown("**Multi-Model AI Assistant**")
+
     st.markdown("---")
-    st.markdown("Navigate to different pages using the sidebar menu")
+
+    # Provider setup
+    st.subheader("🔑 AI Provider Setup")
+
+    available_providers = ProviderFactory.get_available_providers()
+
+    for provider_name in available_providers:
+        with st.expander(f"**{provider_name.upper()}** Configuration"):
+            # Check for API key in environment or settings
+            api_key_env = f"{provider_name.upper()}_API_KEY"
+            current_key = os.getenv(api_key_env) or ""
+
+            if provider_name in settings.providers and settings.providers[provider_name].api_key:
+                current_key = settings.providers[provider_name].api_key
+
+            api_key = st.text_input(
+                f"API Key",
+                value=current_key,
+                type="password",
+                key=f"{provider_name}_key",
+                help=f"Enter your {provider_name.upper()} API key"
+            )
+
+            # Get default model based on provider
+            default_models = {
+                "openai": "gpt-4o-mini",
+                "anthropic": "claude-3-5-sonnet-20241022",
+                "mistral": "mistral-large-latest",
+                "google": "gemini-1.5-flash"
+            }
+
+            default_model = st.text_input(
+                "Default Model",
+                value=settings.providers.get(provider_name, None).default_model if provider_name in settings.providers else default_models.get(provider_name, ""),
+                key=f"{provider_name}_model"
+            )
+
+            enabled = st.checkbox(
+                "Enable this provider",
+                value=provider_name in settings.providers and settings.providers[provider_name].enabled,
+                key=f"{provider_name}_enabled"
+            )
+
+            if st.button(f"Save {provider_name.upper()}", key=f"{provider_name}_save"):
+                if api_key and default_model:
+                    settings.add_provider(provider_name, api_key, default_model, enabled)
+                    save_settings(settings)
+                    st.success(f"{provider_name.upper()} configured!")
+                    st.rerun()
+                else:
+                    st.error("Please provide both API key and default model")
+
+    st.markdown("---")
+
+    # Show enabled providers
+    enabled_providers = settings.get_enabled_providers()
+    if enabled_providers:
+        st.success(f"✅ {len(enabled_providers)} provider(s) enabled")
+        for prov in enabled_providers:
+            st.markdown(f'<span class="provider-badge">{prov}</span>', unsafe_allow_html=True)
+    else:
+        st.warning("⚠️ No providers enabled")
+
+    st.markdown("---")
+    st.markdown("Navigate using the sidebar menu")
 
 # Main content
 col1, col2 = st.columns([2, 1])
 
 with col1:
-    st.markdown('<div class="main-header">Welcome to Mistral AI Assistant</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">Your intelligent document-aware chat companion</div>', unsafe_allow_html=True)
-    
+    st.markdown('<div class="main-header">Universal AI Chatbot</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">One interface for all your favorite AI models</div>', unsafe_allow_html=True)
+
     # Features section
-    st.markdown("### Key Features")
-    
+    st.markdown("### ✨ Key Features")
+
     # Feature cards
     feature_data = [
         {
-            "icon": "💬",
-            "title": "Intelligent Chat",
-            "description": "Chat with a state-of-the-art language model powered by Mistral AI."
+            "icon": "🎯",
+            "title": "Multi-Model Support",
+            "description": "Switch seamlessly between OpenAI, Anthropic Claude, Google Gemini, Mistral AI, and more providers."
+        },
+        {
+            "icon": "🔌",
+            "title": "MCP Server Integration",
+            "description": "Connect to Model Context Protocol (MCP) servers for enhanced capabilities and custom tools."
         },
         {
             "icon": "📚",
-            "title": "Document Indexing & Search",
-            "description": "Index your documents and get context-aware responses based on your data."
+            "title": "Document Intelligence",
+            "description": "Index and search through your documents with semantic understanding for context-aware responses."
         },
         {
-            "icon": "🔍",
-            "title": "Semantic Search",
-            "description": "Find information in your documents using natural language queries."
+            "icon": "💬",
+            "title": "Advanced Conversations",
+            "description": "Real streaming responses, conversation history, export/import, and structured flows."
+        },
+        {
+            "icon": "⚙️",
+            "title": "Highly Configurable",
+            "description": "Customize models, parameters, prompts, and behaviors to match your needs."
         },
         {
             "icon": "📊",
-            "title": "Multi-step Analysis",
-            "description": "Generate summaries, extract insights, and create reports from your conversations."
+            "title": "Response Grading & Reports",
+            "description": "Evaluate AI responses, generate conversation reports, and analyze performance."
         }
     ]
-    
+
     for feature in feature_data:
         st.markdown(f"""
         <div class="feature-card">
@@ -149,44 +213,68 @@ with col1:
             <div class="feature-description">{feature['description']}</div>
         </div>
         """, unsafe_allow_html=True)
-    
+
     # Call to action
-    if st.session_state.api_key_set:
-        st.markdown(
-            '<a href="/Chat" target="_self"><div class="cta-button">Start Chatting Now</div></a>', 
-            unsafe_allow_html=True
-        )
+    if enabled_providers:
+        st.markdown("### 🚀 Ready to Get Started!")
+        col_a, col_b, col_c = st.columns(3)
+        with col_a:
+            if st.button("💬 Start Chatting", use_container_width=True):
+                st.switch_page("pages/1_chat.py")
+        with col_b:
+            if st.button("📚 Manage Documents", use_container_width=True):
+                st.switch_page("pages/4_document_index.py")
+        with col_c:
+            if st.button("⚙️ Settings", use_container_width=True):
+                st.switch_page("pages/7_settings.py")
     else:
-        st.info("Please set your Mistral API Key in the sidebar to start using the assistant.")
+        st.info("👈 Please configure at least one AI provider in the sidebar to get started.")
 
 with col2:
-    # Placeholder for an image or graphic
-    st.markdown("### How It Works")
+    st.markdown("### 🎨 Supported Providers")
+
+    provider_info = {
+        "openai": {"name": "OpenAI", "models": "GPT-4, GPT-3.5, O1"},
+        "anthropic": {"name": "Anthropic", "models": "Claude 3.5 Sonnet, Opus, Haiku"},
+        "google": {"name": "Google", "models": "Gemini 2.0, 1.5 Pro, Flash"},
+        "mistral": {"name": "Mistral AI", "models": "Large, Medium, Small, Codestral"}
+    }
+
+    for provider, info in provider_info.items():
+        is_enabled = provider in enabled_providers
+        status = "✅" if is_enabled else "⚪"
+        st.markdown(f"""
+        **{status} {info['name']}**
+        *Models: {info['models']}*
+        """)
+
+    st.markdown("---")
+
+    st.markdown("### 📖 Quick Start")
     st.markdown("""
-    1. **Set up your API key** in the sidebar
-    2. **Navigate to the Chat page** to start a conversation
-    3. **Upload documents** for context-aware responses
-    4. **Ask questions** about your documents or general topics
-    5. **Save conversations** for future reference
+    1. **Configure Providers** - Add API keys for your preferred AI providers in the sidebar
+    2. **Start Chatting** - Go to the Chat page and select a model
+    3. **Upload Documents** - Add documents for context-aware responses
+    4. **Connect MCP Servers** - Extend capabilities with external tools (optional)
     """)
-    
-    st.markdown("### Getting Started")
-    if st.session_state.api_key_set:
-        st.markdown("""
-        You're all set up! Use the navigation menu in the sidebar to:
-        - Chat with the AI Assistant
-        - Manage your document index
-        - Configure settings
-        - View saved conversations
-        """)
-    else:
-        st.markdown("""
-        To get started:
-        1. Enter your Mistral AI API Key in the sidebar
-        2. Navigate to the Chat or other pages from the sidebar menu
-        3. Start interacting with your AI assistant!
-        """)
+
+    st.markdown("---")
+
+    st.markdown("### 🆕 What's New in v2.0")
+    st.markdown("""
+    - ✨ Multi-provider support (OpenAI, Anthropic, Google, Mistral)
+    - 🔌 MCP server integration
+    - 💾 Enhanced conversation management
+    - 🎨 Modern, responsive UI
+    - 🔧 Improved configuration system
+    - 📊 Better document indexing
+    """)
 
 # Footer
 st.markdown("---")
-st.markdown("© 2025 Mistral AI Assistant | Powered by Mistral AI and Streamlit")
+st.markdown("""
+<div style="text-align: center; color: #666; font-size: 0.9rem;">
+    <p>Universal AI Chatbot v2.0 | Built with ❤️ using Streamlit</p>
+    <p>Supporting OpenAI • Anthropic • Google • Mistral AI • MCP Servers</p>
+</div>
+""", unsafe_allow_html=True)
