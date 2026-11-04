@@ -90,7 +90,7 @@ class Settings:
         """Get list of enabled provider names"""
         return [
             name for name, config in self.providers.items()
-            if config.enabled and config.api_key
+            if config.enabled and self.get_provider_api_key(name)
         ]
 
     def to_dict(self) -> Dict[str, Any]:
